@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>พาแนล น้องวัน V2</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body {
+    margin: 0;
+    font-family: 'Kanit', sans-serif;
+    background: linear-gradient(135deg,#0f0f0f,#1a0a2f);
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top:0; left:0;
+    width: 100%; height:100%;
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255,255,255,0.1),
+        rgba(255,255,255,0.1) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+    pointer-events: none;
+    animation: shimmer 3s linear infinite;
+}
+@keyframes shimmer {
+    0% {background-position: 0 0;}
+    100% {background-position: 100px 100px;}
+}
+
+.panel {
+    background: rgba(20, 0, 30, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    width: 360px;
+    box-shadow: 0 0 40px #6a0dad;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+h2 {
+    text-align: center;
+    color: #cfa0ff;
+    margin-bottom: 25px;
+}
+
+label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 0;
+    cursor: pointer;
+    font-weight: 500;
+    color: #eee;
+}
+
+input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    accent-color: #6a0dad;
+}
+
+input[type="range"] {
+    width: 100%;
+}
+
+button {
+    width: 48%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px #6a0dad;
+}
+
+.save { background-color: #ff3b3b; color: #fff; }
+.reset { background-color: #444; color: #fff; }
+
+.footer {
+    margin-top: 20px;
+    font-size: 12px;
+    text-align: center;
+    color: #aaa;
+}
+
+.note {
+    margin-top: 15px;
+    font-size: 12px;
+    color: #ff5555;
+    text-align: center;
+}
+
+/* ข้อความ wanx2 ตกลงมาจากบน */
+.wanx2Text {
+    position: absolute;
+    color: #fff;
+    font-weight: bold;
+    pointer-events: none;
+    font-size: 20px;
+    animation: fall 3s forwards;
+}
+@keyframes fall {
+    0% {top: -20px; opacity:1;}
+    100% {top: 90%; opacity:0;}
+}
+</style>
+</head>
+<body>
+
+<div class="panel">
+    <h2>พาแนล น้องวัน V2</h2>
+    <label>ช่วยลาก <input type="checkbox" checked></label>
+    <label>ตัวลอย <input type="checkbox"></label>
+    <label>กระสุนตรง <input type="checkbox"></label>
+    <label>เพิ่ม FPS <input type="checkbox"></label>
+    <label>กันแบน <input type="checkbox" checked></label>
+    <label>DPI: <input type="range" min="0" max="750" value="50" id="dpiRange"></label>
+    <div style="display:flex; justify-content:space-between;">
+        <button class="save">ยืนยันตั้งค่า</button>
+        <button class="reset">RESET</button>
+    </div>
+    <div class="note">ของเสียเงินห้ามแจกต่อ!</div>
+    <div class="footer">พาแนล น้องวัน</div>
+</div>
+
+<audio id="tickSound" src="https://www.soundjay.com/button/sounds/button-16.mp3" preload="auto"></audio>
+
+<script>
+const saveBtn = document.querySelector('.save');
+const resetBtn = document.querySelector('.reset');
+const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+const dpiRange = document.getElementById('dpiRange');
+const tickSound = document.getElementById('tickSound');
+
+// เล่นเสียงเวลา checkbox ถูกติ๊ก
+checkboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+        tickSound.currentTime = 0;
+        tickSound.play();
+    });
+});
+
+// กดยืนยันตั้งค่า
+saveBtn.addEventListener('click', () => {
+    alert('ตั้งค่าพาแนลเสร็จ!');
+});
+
+// รีเซ็ต
+resetBtn.addEventListener('click', () => {
+    checkboxes.forEach(c => c.checked = false);
+    dpiRange.value = 50;
+});
+
+// สร้างข้อความ wanx2 ทุก 3 วิ ตกลงมาจากด้านบน
+setInterval(() => {
+    const text = document.createElement('div');
+    text.className = 'wanx2Text';
+    text.textContent = 'wanx2';
+    text.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+    document.body.appendChild(text);
+    setTimeout(()=> text.remove(), 3000);
+}, 3000);
+
+</script>
+</body>
+</html>
